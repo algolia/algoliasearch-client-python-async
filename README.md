@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.com/algolia/algoliasearch-client-python-async.svg?token=NAo1YMSYUe1rsBFvhGmF&branch=master)](https://travis-ci.com/algolia/algoliasearch-client-python-async)
+[![PyPI version](https://badge.fury.io/py/algoliasearchasync.svg)](https://badge.fury.io/py/algoliasearchasync)
+[![Coverage Status](https://coveralls.io/repos/github/algolia/algoliasearch-client-python-async/badge.svg?branch=master)](https://coveralls.io/github/algolia/algoliasearch-client-python-async?branch=master)
+
 **This package is in its early stages please report any bug you find to help
 us improve it**
 
