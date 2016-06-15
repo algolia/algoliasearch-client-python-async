@@ -60,24 +60,29 @@ With python >= 3.4
 import asyncio
 from algoliasearchasync import ClientAsync
 
-client = ClientAsync('<APP_ID>', '<API_KEY>')
-index = client.init_index('<INDEX_NAME>')
+
+@asyncio.coroutine
+def main(terms):
+    client = ClientAsync('<APP_ID>', '<API_KEY>')
+    index = client.init_index('<INDEX_NAME>')
+    # Create as many searches as there is terms.
+    searches = [index.search_async(term) for term in terms]
+    # Store the aggregated results.
+    s = yield from asyncio.gather(*searches)
+    # Client must be closed manually before exiting the program.
+    yield from client.close()
+    # Return the aggregated results.
+    return s
+
+
 terms = ['<TERM2>', '<TERM2>']
-
-# Create two different asynchronous searches for '<TERM1>' and '<TERM2>'.
-searches = [index.search_async(term) for term in terms]
-
 loop = asyncio.get_event_loop()
-# Start and wait for completion.
+# Start and wait for the tasks to complete.
 complete = loop.run_until_complete(asyncio.gather(*searches))
-
 for term, search in zip(terms, complete):
     print('Results for: {}'.format(term))
     # Display the field '<FIELD>' of each result.
     print('\n'.join([h['<FIELD>'] for h in search['hits']]))
-
-# Client must be closed manually.
-loop.run_until_complete(client.close())
 ```
 
 With python >= 3.5.1
@@ -85,6 +90,7 @@ With python >= 3.5.1
 ```python
 import asyncio
 from algoliasearchasync import ClientAsync
+
 
 # Define a coroutine to be able to use `async with`.
 async def main(terms):
@@ -96,9 +102,10 @@ async def main(terms):
         # Return the aggregated results.
         return await asyncio.gather(*searches)
 
+
 terms = ['<TERM1>', '<TERM2>']
 loop = asyncio.get_event_loop()
-# Start and wait for the task to complete.
+# Start and wait for the tasks to complete.
 complete = loop.run_until_complete(main(terms))
 for term, search in zip(terms, complete):
     print('Results for {}'.format(term))
