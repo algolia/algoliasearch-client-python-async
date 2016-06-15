@@ -13,7 +13,7 @@ class KeyTest(unittest.TestCase):
     def setUpClass(cls):
         cls.loop = asyncio.get_event_loop()
         cls.client = get_api_client()
-        cls.index_name = safe_index_name('àlgol?à-python{0}'.format(
+        cls.index_name = safe_index_name('àlgol?à-python-async{0}'.format(
                                          randint(1, 1000)))
         cls.index = cls.client.init_index(cls.index_name)
         cls.client.delete_index(cls.index_name)
