@@ -1,6 +1,6 @@
 from .client import ClientAsync
 from .index import IndexAsync
+from .version import __version__
 
 
 __all__ = ['ClientAsync', 'IndexAsync']
-__version__ = '0.1'
