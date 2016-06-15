@@ -1,3 +1,6 @@
 *.pyc
 __pycache__
 .tox
+algoliasearchasync.egg-info
+build
+dist

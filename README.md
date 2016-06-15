@@ -46,9 +46,9 @@ All the asynchronous functions have the same names as the synchronous ones
 with `_async` appended. Synchronous methods keep the same name.
 
 Arguments taken by the asynchronous functions are the same as the synchronous
-one, for the documentation of the behavior of each function please see:
+one, for documentation on the behavior of each function please see:
 
-- [Synchronous python clinet](https://github.com/algolia/algoliasearch-client-python)
+- [Synchronous python client](https://github.com/algolia/algoliasearch-client-python)
 
 - [Algolia documentation](https://www.algolia.com/doc)
 
