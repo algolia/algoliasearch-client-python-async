@@ -1,8 +1,14 @@
+**This package is in its early stages please report any bug you find to help
+us improve it**
+
+
 # Algolia Asynchronous Python Client
 
 This package is designed to replace the
-![`algoliasearch`](https://github.com/algolia/algoliasearch-client-python)
+[`algoliasearch`](https://github.com/algolia/algoliasearch-client-python)
 package in asynchronous environments.
+
+This package is only compatible with python 3.4 and onward.
 
 ## What it does
 
@@ -23,7 +29,7 @@ package in asynchronous environments.
 
 - Implement the `browse`, `browse_all`, `delete_by_query` methods.
 
-- Implement the `search_disjunting_faceting` method.
+- Implement the `search_disjunctive_faceting` method.
 
 - Support task canceling (yet).
 
@@ -33,6 +39,18 @@ Most of the logic of the synchronous client is being used here, so this
 client depends on the synchronous one. It also depends on `aiohttp`.
 
 To install this package: `pip install algoliasearchasync`.
+
+## Documentation
+
+All the asynchronous functions have the same names as the synchronous ones
+with `_async` appended. Synchronous methods keep the same name.
+
+Arguments taken by the asynchronous functions are the same as the synchronous
+one, for the documentation of the behavior of each function please see:
+
+- [Synchronous python clinet](https://github.com/algolia/algoliasearch-client-python)
+
+- [Algolia documentation](https://www.algolia.com/doc)
 
 ## Examples
 
@@ -46,7 +64,7 @@ client = ClientAsync('<APP_ID>', '<API_KEY>')
 index = client.init_index('<INDEX_NAME>')
 terms = ['<TERM2>', '<TERM2>']
 
-# Create two different asynchronou searches for '<TERM1>' and '<TERM2>'.
+# Create two different asynchronous searches for '<TERM1>' and '<TERM2>'.
 searches = [index.search_async(term) for term in terms]
 
 loop = asyncio.get_event_loop()
@@ -78,7 +96,7 @@ async def main(terms):
         # Return the aggregated results.
         return await asyncio.gather(*searches)
 
-terms = ['lua', 'http']
+terms = ['<TERM1>', '<TERM2>']
 loop = asyncio.get_event_loop()
 # Start and wait for the task to complete.
 complete = loop.run_until_complete(main(terms))
