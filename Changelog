@@ -1,0 +1,5 @@
+CHANGELOG
+
+2016-12-13 1.0
+    * Add `searcH_for_facet_values`
+    * Implement a more robust strategy to handle a unavailable DNS provider
