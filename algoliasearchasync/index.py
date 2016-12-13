@@ -26,6 +26,7 @@ INDEX_ASYNC_METHODS = [
     'save_objects',
     'save_synonym',
     'search',
+    'search_for_facet_values',
     'search_synonyms',
     'set_settings',
     'update_user_key',

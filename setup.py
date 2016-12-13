@@ -31,7 +31,7 @@ setup(
     packages_data={'algoliasearchasync': ['resources/*.crt']},
     include_package_data=True,
     zip_safe=False,  # Because of the certificate
-    install_requires=['algoliasearch>=1.9.0', 'aiohttp>=0.21.6'],
+    install_requires=['algoliasearch>=1.10.1', 'aiohttp>=0.21.6'],
     description='Algolia Search Asyncronous API Client for Python',
     long_description=README,
     author='Algolia Team',
