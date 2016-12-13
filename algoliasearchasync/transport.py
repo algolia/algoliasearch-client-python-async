@@ -1,8 +1,12 @@
 import json
+import time
 
 import aiohttp
 import asyncio
-from algoliasearch.helpers import AlgoliaException, CustomJSONEncoder, urlify
+from algoliasearch.helpers import AlgoliaException, CustomJSONEncoder, urlify, rotate
+
+
+DNS_TIMER_DELAY = 5 * 60  # 5 minutes
 
 
 class Transport:
@@ -11,6 +15,7 @@ class Transport:
         self.read_hosts = []
         self.write_hosts = []
 
+        self._dns_timer = 0
         self._conn_timeout = 2
         self.timeout = 30
         self.search_timeout = 5
@@ -20,6 +25,24 @@ class Transport:
     def _init_session(self):
         connector = aiohttp.TCPConnector(conn_timeout=self.conn_timeout)
         self.session = aiohttp.ClientSession(connector=connector)
+
+    @property
+    def read_hosts(self):
+        return self._read_hosts
+
+    @read_hosts.setter
+    def read_hosts(self, value):
+        self._read_hosts = value
+        self._original_read_hosts = value
+
+    @property
+    def write_hosts(self):
+        return self._write_hosts
+
+    @write_hosts.setter
+    def write_hosts(self, value):
+        self._write_hosts = value
+        self._original_write_hosts = value
 
     @property
     def conn_timeout(self):
@@ -46,12 +69,8 @@ class Transport:
         if data is not None:
             data = json.dumps(data, cls=CustomJSONEncoder)
 
-        if is_search:
-            timeout = self.search_timeout
-            hosts = self.read_hosts
-        else:
-            timeout = self.timeout
-            hosts = self.write_hosts
+        hosts = self._get_hosts(is_search)
+        timeout = self.search_timeout if is_search else self.timeout
 
         exceptions = {}
         for i, host in enumerate(hosts):
@@ -68,6 +87,8 @@ class Transport:
                 raise e
             # TODO: Handle task canceling.
             except Exception as e:
+                self._rotate_hosts(is_search)
+                self._dns_timer = time.time()
                 exceptions[host] = '%s: %s' % (e.__class__.__name__, str(e))
             finally:
                 if old_timeout is not None:
@@ -93,3 +114,22 @@ class Transport:
                     raise AlgoliaException(message)
         # TODO: Check this for replacement.
         res.raise_for_status()
+
+    def _get_hosts(self, is_search):
+        secs_since_rotate = time.time() - self._dns_timer
+        if is_search:
+            if secs_since_rotate < DNS_TIMER_DELAY:
+                return self.read_hosts
+            else:
+                return self._original_read_hosts
+        else:
+            if secs_since_rotate < DNS_TIMER_DELAY:
+                return self.write_hosts
+            else:
+                return self._original_write_hosts
+
+    def _rotate_hosts(self, is_search):
+        if is_search:
+            self._read_hosts = rotate(self.read_hosts)
+        else:
+            self._write_hosts = rotate(self.write_hosts)

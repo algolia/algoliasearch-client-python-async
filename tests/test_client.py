@@ -5,6 +5,7 @@ from random import randint
 
 import asyncio
 from algoliasearchasync import ClientAsync
+from algoliasearch.helpers import AlgoliaException
 
 from .helpers import FakeData, get_api_client, safe_index_name
 
@@ -102,25 +103,35 @@ class ClientNoDataOperationsTest(ClientTest):
         self.assertEqual(sub_client.headers['X-User'], 'algolia')
         self.loop.run_until_complete(sub_client.close())
 
-    # def test_dns_timeout(self):
-    #     app_id = os.environ['ALGOLIA_APPLICATION_ID']
+    def test_dns_timeout(self):
+        app_id = os.environ['ALGOLIA_APPLICATION_ID']
 
-    #     hosts = [
-    #         '%s-dsn.algolia.biz' % app_id,
-    #         '%s-dsn.algolia.net' % app_id,
-    #         '%s-1.algolianet.com' % app_id,
-    #         '%s-2.algolianet.com' % app_id,
-    #         '%s-3.algolianet.com' % app_id,
-    #     ]
+        hosts = ['algolia.biz']
+        client = ClientAsync(app_id, os.environ['ALGOLIA_API_KEY'], hosts)
+        self.loop.run_until_complete(client.set_conn_timeout(2))
+        client.read_timeout = 2
 
-    #     client = ClientAsync(app_id, os.environ['ALGOLIA_API_KEY'], hosts)
-    #     self.loop.run_until_complete(client.set_conn_timeout(2))
-    #     client.read_timeout = 2
+        now = time.time()
+        try:
+            client.list_indexes()
+        except AlgoliaException:
+            pass
+        self.assertLess(time.time(), now + 3)
+        self.loop.run_until_complete(client.close())
 
-    #     now = time.time()
-    #     client.list_indexes()
-    #     self.assertLess(now + 5, time.time())
-    #     self.loop.run_until_complete(client.close())
+    def test_dns_timeout_hard(self):
+        app_id = os.environ['ALGOLIA_APPLICATION_ID']
+
+        hosts = ['algolia.biz', '%s-dsn.algolia.net' % app_id]
+        client = ClientAsync(app_id, os.environ['ALGOLIA_API_KEY'], hosts)
+        self.loop.run_until_complete(client.set_conn_timeout(1))
+
+        now = time.time()
+        for i in range(10):
+            client.list_indexes()
+
+        self.assertLess(time.time(), now + 5)
+        self.loop.run_until_complete(client.close())
 
     def test_new_secured_keys(self):
         self.assertEquals("MDZkNWNjNDY4M2MzMDA0NmUyNmNkZjY5OTMzYjVlNmVlMTk1NTEwMGNmNTVjZmJhMmIwOTIzYjdjMTk2NTFiMnRhZ0ZpbHRlcnM9JTI4cHVibGljJTJDdXNlcjElMjk=", self.client.generate_secured_api_key("182634d8894831d5dbce3b3185c50881", "(public,user1)"))
