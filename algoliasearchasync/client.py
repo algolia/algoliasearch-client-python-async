@@ -5,6 +5,9 @@ import asyncio
 from .helpers import gen_async, gen_forward, gen_sync
 from .index import IndexAsync
 from .transport import Transport
+from .version import __version__
+
+USER_AGENT = "; async ({})".format(__version__)
 
 CLIENT_ASYNC_METHODS = [
     'add_user_key',
@@ -33,6 +36,7 @@ class ClientAsync(object):
     def __init__(self, app_id, api_key, hosts_array=None):
         t = Transport()
         self._base = Client(app_id, api_key, hosts_array, t)
+        t.headers['User-Agent'] += USER_AGENT
 
         for method in CLIENT_ASYNC_METHODS:
             setattr(self, method + '_async', gen_async(self, method))
