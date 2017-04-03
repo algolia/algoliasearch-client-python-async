@@ -1,5 +1,5 @@
 import asyncio
-import time
+import calendar
 from random import randint
 from decimal import Decimal
 from datetime import datetime
@@ -105,7 +105,7 @@ class IndexWithoutDataTest(IndexTest):
         self.index.wait_task(task['taskID'])
 
         res = self.index.get_object(task['objectID'])
-        self.assertEqual(res['now'], time.mktime(value.timetuple()))
+        self.assertEqual(res['now'], calendar.timegm(value.utctimetuple()))
 
     def test_synonyms(self):
         task = self.index.add_object({'name': '589 Howard St., San Francisco'})

@@ -23,8 +23,8 @@ class Transport:
         self._init_session()
 
     def _init_session(self):
-        connector = aiohttp.TCPConnector(conn_timeout=self.conn_timeout, use_dns_cache=False)
-        self.session = aiohttp.ClientSession(connector=connector)
+        connector = aiohttp.TCPConnector(use_dns_cache=False)
+        self.session = aiohttp.ClientSession(conn_timeout=self.conn_timeout, connector=connector)
 
     @property
     def read_hosts(self):

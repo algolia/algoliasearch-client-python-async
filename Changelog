@@ -1,5 +1,8 @@
 CHANGELOG
 
+2017-04-03 1.2.0
+    * Require the use of aiohttp 2.X
+
 2017-01-03 1.1.1
     * Change the User-Agent to include async version
 
