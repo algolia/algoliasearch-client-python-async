@@ -1,4 +1,6 @@
 CHANGELOG
+2017-04-25 1.2.1
+    * Add setters for timeouts at ClientAsync level
 
 2017-01-03 1.1.1
     * Change the User-Agent to include async version
