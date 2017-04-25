@@ -1,4 +1,6 @@
 CHANGELOG
+2017-04-25 1.2.1
+    * Add setters for timeouts at ClientAsync level
 
 2017-04-03 1.2.0
     * Require the use of aiohttp 2.X

@@ -84,3 +84,19 @@ class ClientAsync(object):
     @property
     def headers(self):
         return self._base.headers
+
+    @property
+    def search_timeout(self):
+        return self._base._transport.search_timeout
+
+    @search_timeout.setter
+    def search_timeout(self, t):
+        self._base._transport.search_timeout = t
+
+    @property
+    def timeout(self):
+        return self._base._transport.timeout
+
+    @timeout.setter
+    def timeout(self, t):
+        self._base._transport.timeout = t
