@@ -33,8 +33,8 @@ CLIENT_FORWARD_METHODS = [
 
 
 class ClientAsync(object):
-    def __init__(self, app_id, api_key, hosts_array=None):
-        t = Transport()
+    def __init__(self, app_id, api_key, hosts_array=None, http_search=False):
+        t = Transport(http_search)
         self._base = Client(app_id, api_key, hosts_array, t)
         t.headers['User-Agent'] += USER_AGENT
 
