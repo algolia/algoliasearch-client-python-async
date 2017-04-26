@@ -1,4 +1,7 @@
 CHANGELOG
+2017-04-26 1.2.2
+    * Allow performing searches with HTTP
+
 2017-04-25 1.2.1
     * Add setters for timeouts at ClientAsync level
 

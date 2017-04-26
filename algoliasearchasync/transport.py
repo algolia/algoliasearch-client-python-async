@@ -10,7 +10,7 @@ DNS_TIMER_DELAY = 5 * 60  # 5 minutes
 
 
 class Transport:
-    def __init__(self):
+    def __init__(self, http_search):
         self.headers = {}
         self.read_hosts = []
         self.write_hosts = []
@@ -19,6 +19,7 @@ class Transport:
         self._conn_timeout = 2
         self.timeout = 30
         self.search_timeout = 5
+        self.http_search = http_search
 
         self._init_session()
 
@@ -81,7 +82,7 @@ class Transport:
                 yield from self.set_conn_timeout(self.conn_timeout + 2)
 
             try:
-                coro = self._req(host, path, meth, timeout, params, data)
+                coro = self._req(host, path, meth, timeout, params, data, is_search)
                 return (yield from coro)
             except AlgoliaException as e:
                 raise e
@@ -97,9 +98,12 @@ class Transport:
         raise AlgoliaException('Unreachable hosts: %s', exceptions)
 
     @asyncio.coroutine
-    def _req(self, host, path, meth, timeout, params, data):
+    def _req(self, host, path, meth, timeout, params, data, is_search):
         """Perform an HTTPS request with aiohttp's ClientSession."""
-        url = 'https://%s%s' % (host, path)
+        if is_search and self.http_search:
+            url = 'http://%s%s' % (host, path)
+        else:
+            url = 'https://%s%s' % (host, path)
         req = self.session.request(meth, url, params=params, data=data,
                                    headers=self.headers)
         res = yield from req
