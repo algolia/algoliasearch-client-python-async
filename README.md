@@ -27,8 +27,6 @@ This package is only compatible with python 3.4 and onward.
 
 ## What it does **not**
 
-- Implement the `browse`, `browse_all`, `delete_by_query` methods.
-
 - Implement the `search_disjunctive_faceting` method.
 
 - Support task canceling (yet).
