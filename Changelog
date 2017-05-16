@@ -1,6 +1,7 @@
 CHANGELOG
-2017-04-26 1.2.2
-    * Allow performing searches with HTTP
+
+2017-05-16 1.3.0
+    * Implement browse_from_async, browse_all_async and delete_by_query_async
 
 2017-04-25 1.2.1
     * Add setters for timeouts at ClientAsync level
