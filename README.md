@@ -94,7 +94,7 @@ from algoliasearchasync import ClientAsync
 async def main(terms):
     # Scope the client for it to be closed automatically.
     async with ClientAsync('<APP_ID>', '<API_KEY>') as client:
-        index = c.init_index('<INDEX_NAME>')
+        index = client.init_index('<INDEX_NAME>')
         # Create as many searches as there is terms.
         searches = [index.search_async(term) for term in terms]
         # Return the aggregated results.
