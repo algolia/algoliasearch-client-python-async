@@ -62,10 +62,19 @@ class Transport:
             yield from self.session.close()
 
     @asyncio.coroutine
-    def req(self, is_search, path, meth, params=None, data=None):
+    def req(self, is_search, path, meth, params=None, data=None, request_options=None):
         """Perform an HTTPS request with retry logic."""
-        if params is not None:
-            params = urlify(params)
+
+        # Merge params and request_options params.
+        params = {} if params is None else params.copy()
+        if request_options is not None and request_options.parameters is not None:
+            params.update(request_options.parameters)
+        params = urlify(params)
+
+        # Merge headers and request_options headers.
+        headers = {} if self.headers is None else self.headers.copy()
+        if request_options is not None and request_options.headers is not None:
+            headers.update(request_options.headers)
 
         if data is not None:
             data = json.dumps(data, cls=CustomJSONEncoder)
