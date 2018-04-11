@@ -4,3 +4,9 @@ __pycache__
 algoliasearchasync.egg-info
 build
 dist
+
+# coverage private format
+.coverage
+
+# IDE
+.idea/
