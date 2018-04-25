@@ -3,6 +3,8 @@ import time
 
 import aiohttp
 import asyncio
+import async_timeout
+
 from algoliasearch.helpers import AlgoliaException, CustomJSONEncoder, urlify, rotate
 
 
@@ -116,7 +118,7 @@ class Transport:
         req = self.session.request(meth, url, params=params, data=data,
                                    headers=self.headers)
         res = yield from req
-        with aiohttp.Timeout(timeout):
+        with async_timeout.timeout(timeout):
             if res.status // 100 == 2:
                 return (yield from res.json())
             elif res.status // 100 == 4:
