@@ -1,3 +1,12 @@
+<h1 align="center">
+    DEPRECATED: Use of this repository is deprecated. Please use Algolia Python Client -
+    <a href="https://github.com/algolia/algoliasearch-client-python">
+        https://github.com/algolia/algoliasearch-client-python
+    </a>
+</h1>
+
+<hr/>
+
 [![Build Status](https://travis-ci.com/algolia/algoliasearch-client-python-async.svg?token=NAo1YMSYUe1rsBFvhGmF&branch=master)](https://travis-ci.com/algolia/algoliasearch-client-python-async)
 [![PyPI version](https://badge.fury.io/py/algoliasearchasync.svg)](https://badge.fury.io/py/algoliasearchasync)
 [![Coverage Status](https://coveralls.io/repos/github/algolia/algoliasearch-client-python-async/badge.svg?branch=master)](https://coveralls.io/github/algolia/algoliasearch-client-python-async?branch=master)
